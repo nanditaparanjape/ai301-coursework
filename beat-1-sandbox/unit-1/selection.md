@@ -53,11 +53,6 @@ https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72
     }                                                                           
   ]        
 
-
-[Likely] Here is the write-up formatted simply, with no code backticks on variables and written in a completely chill, normal tone.
-
-Paste this into your open terminal session:
-
 Run History
 Started with an 11/20 because my maintainer and commit time limits were set way too strict at 3 days and 5 days, which flagged perfectly active repos as dead. The rubric was also missing a rule to check for AI contribution guidelines. Once I opened the commit and maintainer windows to 90 days, added an explicit check for AI contribution rules, and made sure scope-fit fails big umbrella tasks, the eval run hit 18/20.
 
@@ -66,14 +61,10 @@ I picked Issue #72. It is a clean bug in core/security.py where passlib throws a
 
 Check Rationale
 The required checks cover the basic ground rules:
-
-maintainer-alive and repo-active make sure the project is not abandoned so someone actually reviews the PR.
-
-not-claimed checks that nobody is already working on it, while respecting the Path Review rule that classmate claims do not block you.
-
-scope-fit keeps you from getting stuck on massive tasks or unresolved debates.
-
-ai-policy-allowed confirms the repository allows AI-assisted coding.
+1) maintainer-alive and repo-active make sure the project is not abandoned so someone actually reviews the PR.
+2) not-claimed checks that nobody is already working on it, while respecting the Path Review rule that classmate claims do not block you.
+3) scope-fit keeps you from getting stuck on massive tasks or unresolved debates.
+4_ ai-policy-allowed confirms the repository allows AI-assisted coding.
 
 Trade-offs
 The rubric prefers quick, contained bug fixes over big features or broad docs rewrites. It will take a short, bare-bones issue description if the code fix itself is small, but it immediately filters out messy multi-part checklist tasks even if they have a beginner tag.
