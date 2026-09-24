@@ -26,7 +26,7 @@
 | maintainer-alive | "maintainer first-response sample" under repo facts | median response time is 90 days or less, OR at least 1 human commit on the default branch in the last 60 days, OR a maintainer commented in the thread | required |
 | repo-active | "last 5 default-branch commits" under repo facts | At least 1 commit within the last 80 days of the capture date | required |
 | not-claimed | "this issue: assignees:" under repo facts, comments | assignee is none and no open PR linked or recent comment claiming it | required |
-| scope-fit | issue body and thread, repo-facts | self-contained bug fix or documentation, not a massive rewrite | required |
+| scope-fit | issue body, comments, files changed | fix touches 3 or fewer files, targets a single function or localized component, and issue body contains no multi-item task checklist | required |
 | ai-policy-allowed | "contribution policy" line under repo facts | does not state an outright ban on AI-assisted contributions. silence, disclosure requirements, and human review conditions pass | required |
 | beginner-friendly | issue labels | Labeled "good first issue", "beginner-friendly", or marked for newcomers | preferred |
 
