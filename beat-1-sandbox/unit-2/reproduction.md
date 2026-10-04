@@ -15,8 +15,7 @@ label is not graded.
 
 **GitHub username**
 
-[Your GitHub username, exactly as it appears on your profile — no `@`, no profile URL. Your
-comments upstream are identified by this name.]
+nanditaparanjape
 
 ---
 
@@ -24,16 +23,39 @@ comments upstream are identified by this name.]
 
 **Claim comment**
 
-[Link to the comment where you claimed the issue. Use the comment's own permalink, not the
-issue page on its own. **Then paste the text of that comment underneath the link** — the
-pasted text is what this field is graded on, so copy across what you actually posted.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72#issuecomment-5902128940
+
+Hi, I see others are investigating this as well. I'm reproducing the UnknownHashError in core/security.py locally on macOS with Python 3.11 to verify the failure mode against tests/unit/test_security.py. I'll share my reproduction notes shortly.
 
 **Reproduction comment**
 
-[Link to the comment where you posted your reproduction. It must record the environment
-(OS, relevant versions, code state), steps a stranger could follow, and what you observed.
-**Then paste the text of that comment underneath the link** — the pasted text is what this
-field is graded on, so copy across what you actually posted.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/issues/72#issuecomment-5902213212
+
+### Reproduction Report
+
+**Environment:**
+- OS: macOS (Darwin arm64)
+- Python: 3.13.1
+- pytest: 9.1.1
+- Repository: codepath/pathreview-ai301-fa26-s1 (main)
+
+**Steps to Reproduce:**
+
+1. Set up virtual environment and install dependencies:
+`python3 -m venv .venv && source .venv/bin/activate && pip install pytest passlib`
+
+2. Run the security unit tests with summary flags:
+`pytest tests/unit/test_security.py -rxX -v`
+
+**Observed Behavior:**
+
+The test suite completes with 24 passed and 1 xfailed test:
+`XFAIL tests/unit/test_security.py::TestSecurity::test_verify_with_wrong_hash_format - issue #72 (manifest H-05): password verify raises UnknownHashError instead of returning False`
+
+When verify_password receives an invalid hash string, passlib raises an unhandled UnknownHashError rather than returning False.
+
+**Expected Behavior:**
+verify_password should handle malformed or unsupported hash strings safely and return False.
 
 ## Eval iterations
 
@@ -42,30 +64,36 @@ fields.
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+- Run 1 (full 20-package run): 17/20 scored items.
+- Run 2 (targeted --only pkg-06,pkg-09,pkg-10,pkg-12): 4/4 scored items.
+- Run 3 (full 20-package run): 18/20 scored items (below the bar: category floor unmet: no match in disclosure).
+- Run 4 (targeted --only pkg-01,pkg-16,pkg-20): 3/3 scored items.
+- Run 5 (confirming full 20-package run): 20/20 scored items.
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+Package: pkg-20
+Gold label: reject
+Initial rubric verdict: accept
+Final rubric verdict: reject
+
+In pkg-20 (source ghostty-org/ghostty#13604), the repository facts explicitly state strict contribution rules: "All AI usage in any form must be disclosed, stating the tool used and the extent of the assistance... AI-assisted issues and comments must be reviewed and edited by a human before submission." The candidate claim comment and reproduction report included zero disclosure text. 
+
+My rubric initially graded pkg-20 as accept because the check condition in conventions-observed framed AI disclosure as an optional illustration ("like stating whether an AI tool helped write it when the repository asks for disclosure"). Because Sonnet did not treat this as an absolute failure condition, the package slipped through. Once conventions-observed was revised to explicitly demand disclosure whenever repository policy mandates it, the rubric correctly failed the package and matched the gold label.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/repro-check/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+Check quoted from tools/repro-check/rubric.md:
+
+| conventions-observed | The claim and repro comments checked against repo facts and contribution/AI policies | Pass if the comments follow all repository rules. If the repository policy mandates AI-use disclosure on comments/contributions, the comments MUST contain explicit AI disclosure stating the tool or assistance used; fail if disclosure is omitted. | required |
+
+Why it reads this way:
+The initial draft of this check read: "Pass if the comment follows repo rules, like stating whether an AI tool helped write it when the repository asks for disclosure." That phrasing was too soft; Sonnet evaluated missing disclosure as a minor stylistic choice rather than a mandatory compliance failure. Revising the condition to require that comments "MUST contain explicit AI disclosure stating the tool or assistance used; fail if disclosure is omitted" turned repo compliance into a clear binary boundary, which was necessary to pass the single-package disclosure category floor on pkg-20.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+Tightening conventions-observed ensures strict compliance on repositories with explicit AI policies like Ghostty (pkg-20), but it introduces the risk of rejecting human-authored contributions on repositories whose contributing guidelines are ambiguous or recommend disclosure without strictly enforcing it. Conversely, loosening claim-specific to accept natural issue exploration (such as in pkg-09 and pkg-10) allowed valid exploratory comments to pass, but required running canary package pkg-06 with --only to confirm that low-effort comments lacking genuine technical focus were still reliably rejected.
 
 ---
 
-Related paths: `eval-run.txt` in this directory; your skill's files in
-`tools/repro-check/`.
+Related paths: eval-run.txt in this directory; your skill's files in tools/repro-check/.
