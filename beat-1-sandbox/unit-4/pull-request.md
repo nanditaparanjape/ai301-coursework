@@ -15,15 +15,11 @@ label is not graded.
 
 **Pull request**
 
-[Link to the pull request you opened. It must be the pull request's own page on the Path
-Review repo, not your fork's branch page.]
+https://github.com/codepath/pathreview-ai301-fa26-s1/pull/84
 
 **Branch**
 
-[The name of the branch the pull request comes from, exactly as it appears in your fork.
-The naming shape is a type prefix, then the issue number, then a short description. **The
-issue number in the branch name must be the number of the issue the pull request fixes** —
-a name carrying any other number does not satisfy this field.]
+fix/72-handle-unknown-hash-error
 
 ## Eval iterations
 
@@ -32,28 +28,26 @@ fields.
 
 **Run history**
 
-[The agreement score of each run you did, in order. A single run is a complete answer if
-only one run occurred. **The last score in your list must match the agreement line in the
-`eval-run.txt` you committed** — that file is the record of your final run.]
+1. 19/20 scored items  (bar: 18/20: PASS)
 
 **Package analysis**
 
-[Pick one scored package (`pkg-01` through `pkg-20` — the four `calib-` packages are never
-scored). Name it by id, say what your rubric decided and what the gold label said, and
-explain why your rubric read it that way.]
+`pkg-13`:
+- Gold label: `accept`
+- Rubric decision: `reject`
+- Explanation: The rubric failed `pkg-13` on `standards-compliance` because the PR description omitted one of the standard checklist sections required by the target repository's template, even though the core code fix was fully correct and contained no drift. While gold allowed the omission under a permissive template threshold, our rubric strictly required all template sections to be filled.
 
 **Check rationale**
 
-[Quote one check from the `rubric.md` you uploaded to `tools/pr-precheck/`, exactly as it reads now.
-Then say why it reads that way — what you revised to get there, or what you rejected in
-favour of it.]
+Check from `rubric.md`:
+`| standards-compliance | The PR title and description read against the repo's PR template and contributing instructions | All required sections of the PR template are filled with substantive content (no blank fields or leftover placeholders), and required disclosures (including AI-use disclosure) are present | required |`
+
+Why it reads that way:
+The check was formulated to reject pull requests that bypass repository instructions by leaving template sections empty or omitting the required AI-use disclosure. The category floor specifically requires matching both packages in `standards-wall`, so the check was made strict to guarantee that PRs skipping mandatory repository standards (like `pkg-01` and `pkg-20`) are reliably caught.
 
 **Trade-offs**
 
-[Every check gives something up. Any one of these is a complete answer: a package whose
-result it changes, a canary you re-ran with `--only`, a case you accept it will miss, or a
-stated reason nothing changed elsewhere. "Nothing changed, and here is how I know" earns
-the point in full when the reason follows.]
+By enforcing strict adherence to every template section under `standards-compliance`, the rubric produced a false rejection on `pkg-13` (where the gold label accepted despite a minor template omission). This trade-off was accepted to guarantee a 100% detection rate on the critical `standards-wall` category (`pkg-01` and `pkg-20`), satisfying the category floor bar without introducing false passes on substandard PRs.
 
 ---
 
