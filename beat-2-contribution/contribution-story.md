@@ -21,8 +21,8 @@ Executed pytest reproduction suites in an isolated Python 3.12 virtual environme
 **Unit 7: implementation and ruff gate validation**
 Implemented defensive exception handling around CryptContext verification and updated test markers. The local ruff linter flagged docstring placement and import grouping on initial commit. Restructured import hierarchies to satisfy ruff formatting gates cleanly before pushing upstream.
 
-**Unit 8: pull request workflow and upstream tracking**
-Created PR #84 targeting upstream main with structured reproduction and verification summaries. Monitored automated CI workflows to confirm green checkmarks across all test runs. Documented complete contribution trace and responses in course portfolio.
+**Unit 8: PR monitor playbook and stalled-review nudge**
+Configured pr-monitor with a custom playbook defining a 7-day first-review staleness threshold and a 45-day sandbox walk-away rule. The first monitor run hit an expired Claude OAuth session, and the initial reply draft missed the voice guard greeting and CI evidence requirements. Refreshed authentication, added live gh pr checks output with an opening greeting, and posted the voice-checked nudge on PR #84 (issuecomment-6871254468).
 
 ---
 
@@ -173,6 +173,7 @@ Resolves #72. Wrapped `pwd_context.verify(plain_password, hashed_password)` in `
 
 - 2026-10-03: None yet; automated GitHub Actions CI completed with green passing checks.
 - 2026-10-03: Awaiting maintainer review.
+- 2026-11-13: Ran pr-monitor at 41 quiet days (past 7-day threshold, below 45-day walk-away) and posted a voice-checked first-review nudge: https://github.com/codepath/pathreview-ai301-fa26-s1/pull/84#issuecomment-6871254468
 
 **Status:** Awaiting review
 
